@@ -1,0 +1,132 @@
+[
+    {
+        "label": "etree",
+        "importPath": "lxml",
+        "description": "lxml",
+        "isExtraImport": true,
+        "detail": "lxml",
+        "documentation": {}
+    },
+    {
+        "label": "chardet",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "chardet",
+        "description": "chardet",
+        "detail": "chardet",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Set",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "shutil",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "shutil",
+        "description": "shutil",
+        "detail": "shutil",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
+        "documentation": {}
+    },
+    {
+        "label": "traceback",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "traceback",
+        "description": "traceback",
+        "detail": "traceback",
+        "documentation": {}
+    },
+    {
+        "label": "is_header",
+        "kind": 2,
+        "importPath": ".ci-scripts.run-linter",
+        "description": ".ci-scripts.run-linter",
+        "peekOfCode": "def is_header(f: Path):\n    with f.open('rb') as fd:\n        return -1 == fd.read().find(b'endmodule')\ndef transcoding(src: Path, target: Path):\n    with src.open(\"rb\") as fd:\n        rawdata = fd.read()\n        res = chardet.detect(rawdata)\n        encoding = res['encoding'] if res['confidence'] > 0.5 else \"GBK\"\n        try:\n            s = rawdata.decode(encoding)",
+        "detail": ".ci-scripts.run-linter",
+        "documentation": {}
+    },
+    {
+        "label": "transcoding",
+        "kind": 2,
+        "importPath": ".ci-scripts.run-linter",
+        "description": ".ci-scripts.run-linter",
+        "peekOfCode": "def transcoding(src: Path, target: Path):\n    with src.open(\"rb\") as fd:\n        rawdata = fd.read()\n        res = chardet.detect(rawdata)\n        encoding = res['encoding'] if res['confidence'] > 0.5 else \"GBK\"\n        try:\n            s = rawdata.decode(encoding)\n        except:\n            print(\"Transcoding\", src, ':')\n            traceback.print_exc()",
+        "detail": ".ci-scripts.run-linter",
+        "documentation": {}
+    },
+    {
+        "label": "parse_project",
+        "kind": 2,
+        "importPath": ".ci-scripts.run-linter",
+        "description": ".ci-scripts.run-linter",
+        "peekOfCode": "def parse_project(xpr: Path) -> Tuple[str, Set[str], Set[str]]:\n    prjname = os.path.splitext(xpr.name)[0]\n    prjdir = xpr.parent\n    srcdir = prjdir / (prjname + \".srcs\")\n    topname = ''\n    target = prjdir / '.lint'\n    tree = etree.parse(str(xpr))\n    srclist = set()\n    inclist = set()\n    for fileset in tree.xpath(\"/Project/FileSets/FileSet\"):",
+        "detail": ".ci-scripts.run-linter",
+        "documentation": {}
+    },
+    {
+        "label": "run_linter",
+        "kind": 2,
+        "importPath": ".ci-scripts.run-linter",
+        "description": ".ci-scripts.run-linter",
+        "peekOfCode": "def run_linter(prjdir: Path, topname: str, srclist: Set[str], inclist: Set[str]):\n    linter_log = prjdir / \"linter.log\"\n    args = [\"verilator\",\"--lint-only\",\"-Wall\",\"-Wno-DECLFILENAME\",\"-Wno-PINCONNECTEMPTY\",\"-Wno-UNUSED\"]\n    args += ['--top-module', topname]\n    incargs = [ '-I' + i for i in inclist]\n    args += incargs\n    args += srclist\n    # print(args)\n    res = subprocess.run(args)\n    if res.returncode != 0:",
+        "detail": ".ci-scripts.run-linter",
+        "documentation": {}
+    }
+]
