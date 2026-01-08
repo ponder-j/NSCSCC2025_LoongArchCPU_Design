@@ -1,0 +1,112 @@
+/*
+
+Xilinx Vivado v2019.2 (64-bit) [Major: 2019, Minor: 2]
+SW Build: 2708876 on Wed Nov  6 21:40:23 MST 2019
+IP Build: 2700528 on Thu Nov  7 00:09:20 MST 2019
+
+Process ID (PID): 6960
+License: Customer
+
+Current time: 	Thu Jan 08 23:21:07 CST 2026
+Time zone: 	China Standard Time (Asia/Shanghai)
+
+OS: Windows 10
+OS Version: 10.0
+OS Architecture: amd64
+Available processors (cores): 20
+
+Screen size: 1920x1080
+Screen resolution (DPI): 125
+Available screens: 1
+Available disk space: 78 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=15
+
+Java version: 	9.0.4 64-bit
+Java home: 	E:/Xilinx/Vivado/2019.2/tps/win64/jre9.0.4
+Java executable location: 	E:/Xilinx/Vivado/2019.2/tps/win64/jre9.0.4/bin/java.exe
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	A2140
+User home directory: C:/Users/A2140
+User working directory: D:/Grade3_Courses/HIT-Computer_Architecture-Labs/remote_fpga_template
+User country: 	CN
+User language: 	zh
+User locale: 	zh_CN
+
+RDI_BASEROOT: E:/Xilinx/Vivado
+HDI_APPROOT: E:/Xilinx/Vivado/2019.2
+RDI_DATADIR: E:/Xilinx/Vivado/2019.2/data
+RDI_BINDIR: E:/Xilinx/Vivado/2019.2/bin
+
+Vivado preferences file location: C:/Users/A2140/AppData/Roaming/Xilinx/Vivado/2019.2/vivado.xml
+Vivado preferences directory: C:/Users/A2140/AppData/Roaming/Xilinx/Vivado/2019.2/
+Vivado layouts directory: C:/Users/A2140/AppData/Roaming/Xilinx/Vivado/2019.2/layouts
+PlanAhead jar file location: 	E:/Xilinx/Vivado/2019.2/lib/classes/planAhead.jar
+Vivado log file location: 	D:/Grade3_Courses/HIT-Computer_Architecture-Labs/remote_fpga_template/vivado.log
+Vivado journal file location: 	D:/Grade3_Courses/HIT-Computer_Architecture-Labs/remote_fpga_template/vivado.jou
+Engine tmp dir: 	D:/Grade3_Courses/HIT-Computer_Architecture-Labs/remote_fpga_template/.Xil/Vivado-6960-Ponder
+
+Xilinx Environment Variables
+----------------------------
+XILINX: E:/Xilinx/Vivado/2019.2/ids_lite/ISE
+XILINX_DSP: E:/Xilinx/Vivado/2019.2/ids_lite/ISE
+XILINX_PLANAHEAD: E:/Xilinx/Vivado/2019.2
+XILINX_SDK: E:/Xilinx/Vitis/2019.2
+XILINX_VITIS: E:/Xilinx/Vitis/2019.2
+XILINX_VIVADO: E:/Xilinx/Vivado/2019.2
+XILINX_VIVADO_HLS: E:/Xilinx/Vivado/2019.2
+
+
+GUI allocated memory:	131 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 753 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// TclEventType: PROJECT_OPEN_DIALOG
+// [GUI Memory]: 101 MB (+103637kb) [00:00:08]
+// [Engine Memory]: 664 MB (+545139kb) [00:00:08]
+// bB (cr):  Open Project : addNotify
+// Opening Vivado Project: D:\Grade3_Courses\HIT-Computer_Architecture-Labs\remote_fpga_template\thinpad_top.xpr. Version: Vivado v2019.2 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// Tcl Message: open_project D:/Grade3_Courses/HIT-Computer_Architecture-Labs/remote_fpga_template/thinpad_top.xpr 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILESET_TARGET_UCF_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: LOAD_FEATURE
+// HMemoryUtils.trashcanNow. Engine heap size: 972 MB. GUI used memory: 50 MB. Current time: 1/8/26, 11:21:09 PM CST
+// TclEventType: PROJECT_NEW
+// [Engine Memory]: 1,007 MB (+324296kb) [00:00:14]
+// [GUI Memory]: 109 MB (+2850kb) [00:00:15]
+// WARNING: HEventQueue.dispatchEvent() is taking  1920 ms.
+// Tcl Message: open_project D:/Grade3_Courses/HIT-Computer_Architecture-Labs/remote_fpga_template/thinpad_top.xpr 
+// Tcl Message: INFO: [Project 1-313] Project file moved from 'D:/remote_fpga_template' since last save. 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'E:/Xilinx/Vivado/2019.2/data/ip'. 
+// Project name: thinpad_top; location: D:/Grade3_Courses/HIT-Computer_Architecture-Labs/remote_fpga_template; part: xc7a200tfbg676-2
+// Tcl Message: open_project: Time (s): cpu = 00:00:11 ; elapsed = 00:00:07 . Memory (MB): peak = 1077.816 ; gain = 372.109 
+dismissDialog("Open Project"); // bB (cr)
+// [Engine Memory]: 1,067 MB (+10624kb) [00:00:16]
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: update_compile_order -fileset sources_1 
