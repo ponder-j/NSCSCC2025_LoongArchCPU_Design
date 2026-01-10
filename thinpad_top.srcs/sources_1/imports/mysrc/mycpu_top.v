@@ -54,7 +54,7 @@ module mycpu_top(
     reg reset;
     always @(posedge clk) reset <= ~resetn;
 
-    // 固定信号（恒定赋值）
+    // 固定信号（根据注释要求恒定赋值）
     assign inst_sram_wr    = 1'b0;    // 恒为读请求
     assign inst_sram_size  = 2'b10;   // 恒为 4字节 (32bit) 传输
     assign inst_sram_wstrb = 4'b0000; // 因为是读，写使能全为0
