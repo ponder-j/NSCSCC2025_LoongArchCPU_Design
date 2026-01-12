@@ -182,8 +182,6 @@ module mycpu_top(
         .debug_wb_rf_wdata(debug_wb_rf_wdata)
     );
 
-    assign debug_wb_rf_wen = debug_wb_rf_we[0];
-
     // Branch predictor instantiation
     my_branch_predictor branch_predictor (
         .clk(clk),
