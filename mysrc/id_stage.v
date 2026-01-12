@@ -39,9 +39,11 @@ module id_stage(
     reg [`IF_TO_ID_BUS_WIDTH-1:0] id_reg;
     wire [31:0] id_pc;
     wire [31:0] id_inst;
-    wire        id_pred_br_taken_X; 
+    wire        id_pred_br_taken_X;
+    reg         id_pred_br_taken;
     assign {id_pred_br_taken_X, id_pc, id_inst} = id_reg;
-    assign id_pred_br_taken = if_to_id_bus[64]; 
+    // assign id_pred_br_taken = if_to_id_bus[64];
+    
 
     // input bus from WB
     wire        wb_valid;
@@ -62,7 +64,8 @@ module id_stage(
     wire        mem_rf_we_raw;
     wire [4:0]  mem_rf_waddr;
     wire [31:0] mem_rf_wdata;
-    assign {mem_valid, mem_rf_we_raw, mem_rf_waddr, mem_rf_wdata} = mem_to_id_bus;
+    wire        mem_is_load; // NEW: 从 MEM 段获取是否为 Load 指令
+    assign {mem_valid, mem_rf_we_raw, mem_rf_waddr, mem_rf_wdata, mem_is_load} = mem_to_id_bus;
 
     wire wb_rf_we = wb_valid && wb_rf_we_raw;
     wire exe_rf_we = exe_valid && exe_rf_we_raw;
@@ -101,6 +104,7 @@ module id_stage(
     // Branch bus
     wire        actual_br_taken;
     wire        br_cancel;
+    reg         cancel_next;
     wire [31:0] br_target;
     wire [31:0] actual_br_target;
     assign id_to_if_bus = {actual_br_taken, actual_br_target};
@@ -289,7 +293,7 @@ module id_stage(
     assign actual_br_target = (br_taken && !id_pred_br_taken) ? br_target: (id_pc + 32'h4);
 
     wire br_mispred;
-    assign br_mispred = (br_taken != id_pred_br_taken);
+    assign br_mispred = id_valid && (br_taken != id_pred_br_taken);
     assign actual_br_taken = id_valid && id_allow_in && br_mispred; 
     assign br_cancel = actual_br_taken;
 
@@ -310,8 +314,18 @@ module id_stage(
         inst_st_w    || inst_st_b    || inst_beq   || inst_bne
     );
     
-    wire rf_rdata1_hazard = use_rf_rdata1 && (exe_valid && exe_is_load && exe_rf_we && (rf_raddr1 == exe_rf_waddr));
-    wire rf_rdata2_hazard = use_rf_rdata2 && (exe_valid && exe_is_load && exe_rf_we && (rf_raddr2 == exe_rf_waddr));
+    // wire rf_rdata1_hazard = use_rf_rdata1 && (exe_valid && exe_is_load && exe_rf_we && (rf_raddr1 == exe_rf_waddr));
+    // wire rf_rdata2_hazard = use_rf_rdata2 && (exe_valid && exe_is_load && exe_rf_we && (rf_raddr2 == exe_rf_waddr));
+    // 检测 EXE 段的 Load 冲突
+    // 检测 MEM 段的 Load 冲突
+    wire rf_rdata1_hazard = use_rf_rdata1 && (
+        (exe_valid && exe_is_load && exe_rf_we && (rf_raddr1 == exe_rf_waddr)) ||
+        (mem_valid && mem_is_load && mem_rf_we && (rf_raddr1 == mem_rf_waddr))
+    );
+    wire rf_rdata2_hazard = use_rf_rdata2 && (
+        (exe_valid && exe_is_load && exe_rf_we && (rf_raddr2 == exe_rf_waddr)) ||
+        (mem_valid && mem_is_load && mem_rf_we && (rf_raddr2 == mem_rf_waddr))
+    );
 
     assign id_ready_go = !rf_rdata1_hazard && !rf_rdata2_hazard;
     assign id_allow_in = !id_valid || id_ready_go && exe_allow_in;
@@ -320,8 +334,10 @@ module id_stage(
     always @(posedge clk) begin
         if (reset) begin
             id_valid <= 1'b0;
+            cancel_next <= 1'b0;
         end else if (br_cancel) begin
             id_valid <= 1'b0;
+            cancel_next <= 1'b1;
         end else if (id_allow_in) begin
             id_valid <= if_to_id_valid;
         end
@@ -330,6 +346,13 @@ module id_stage(
     always @(posedge clk) begin
         if (id_allow_in && if_to_id_valid) begin
             id_reg <= if_to_id_bus;
+            id_pred_br_taken <= if_to_id_bus[64];
+            if (cancel_next) begin
+                id_reg <= 0;
+                cancel_next <= 0;
+            end
+        end else if (id_pred_br_taken) begin
+            id_pred_br_taken <= 0;
         end
     end
 
