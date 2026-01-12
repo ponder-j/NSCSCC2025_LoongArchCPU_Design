@@ -41,8 +41,7 @@ module id_stage(
     wire [31:0] id_inst;
     wire        id_pred_br_taken_X;
     reg         id_pred_br_taken;
-    wire        if_skipped;
-    assign {id_pred_br_taken_X, id_pc, id_inst, if_skipped} = id_reg;
+    assign {id_pred_br_taken_X, id_pc, id_inst} = id_reg;
     // assign id_pred_br_taken = if_to_id_bus[64];
     
 
@@ -105,7 +104,6 @@ module id_stage(
     // Branch bus
     wire        actual_br_taken;
     wire        br_cancel;
-    reg         cancel_next;
     wire [31:0] br_target;
     wire [31:0] actual_br_target;
     assign id_to_if_bus = {actual_br_taken, actual_br_target};
@@ -335,10 +333,8 @@ module id_stage(
     always @(posedge clk) begin
         if (reset) begin
             id_valid <= 1'b0;
-            cancel_next <= 1'b0;
         end else if (br_cancel) begin
             id_valid <= 1'b0;
-            cancel_next <= 1'b1;
         end else if (id_allow_in) begin
             id_valid <= if_to_id_valid;
         end
@@ -347,11 +343,7 @@ module id_stage(
     always @(posedge clk) begin
         if (id_allow_in && if_to_id_valid) begin
             id_reg <= if_to_id_bus;
-            id_pred_br_taken <= if_to_id_bus[65];
-            if (cancel_next) begin
-                id_reg <= 0;
-                cancel_next <= 0;
-            end
+            id_pred_br_taken <= if_to_id_bus[64];
         end else if (id_pred_br_taken) begin
             id_pred_br_taken <= 0;
         end

@@ -72,7 +72,7 @@ module if_stage (
             req_addr_buf <= 32'b0;
         end else if (!req_pending || br_taken) begin
             req_addr_buf <= nextpc;
-            req_pending <= 1;
+            req_pending <= 1'b1;
         end else if (inst_sram_addr_ok) begin
             // 握手成功，任务完成，清除 pending 状态
             req_pending <= 1'b0;
@@ -102,6 +102,11 @@ module if_stage (
     always @(posedge clk) begin
       if (reset) begin
         if_valid <= 1'b0;
+      end else if (br_taken) begin
+        // 【新增】：一旦 ID 段发生跳转，立刻清空 IF 段的有效位
+        // 1. 如果 IF 段里有错路径指令(UART情况)，它被杀了。
+        // 2. 如果 IF 段本来就是空的(栈清零情况)，这里置0无副作用。
+        if_valid <= 1'b0;
       end else if (if_allow_in) begin
         if_valid <= pre_if_ready_go;
       end
@@ -111,6 +116,9 @@ module if_stage (
         if (reset) begin
             if_inst_buf_valid <= 1'b0;
             if_inst_buf       <= 32'b0;
+        end else if (br_taken) begin 
+            // 【新增】：同样，如果 Buffer 里暂存了错路径的数据，也必须冲刷掉
+            if_inst_buf_valid <= 1'b0;
         end else if (inst_sram_data_ok && !if_inst_buf_valid && !id_allow_in) begin
             if_inst_buf_valid <= 1'b1;
             if_inst_buf       <= inst_sram_rdata;
